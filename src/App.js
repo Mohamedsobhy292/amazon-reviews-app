@@ -5,6 +5,7 @@ import { createGlobalStyle } from 'styled-components';
 import { connect } from 'react-redux';
 import { fetchReviews } from './actions';
 import { getSortedReviews, getAllRatings } from './selectors';
+import { changeReviewsFilter, changeReviewsSorting } from './actions';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -36,11 +37,23 @@ class App extends Component {
     this.props.fetchReviews();
   }
   render() {
-    const { reviews, filters, ratings } = this.props;
+    const {
+      reviews,
+      filters,
+      ratings,
+      changeReviewsFilter,
+      changeReviewsSorting,
+    } = this.props;
     return (
       <div className="app-wrapper">
         <GlobalStyle />
-        <Filters reviews={reviews} ratings={ratings} filters={filters} />
+        <Filters
+          reviews={reviews}
+          ratings={ratings}
+          filters={filters}
+          changeReviewsFilter={changeReviewsFilter}
+          changeReviewsSorting={changeReviewsSorting}
+        />
         <Reviews reviews={reviews} filters={filters} />
       </div>
     );
@@ -53,6 +66,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
   fetchReviews,
+  changeReviewsFilter,
+  changeReviewsSorting,
 };
 
 export default connect(
