@@ -1,21 +1,57 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Reviews from './components/reviews';
+import Filters from './components/filters';
+import { createGlobalStyle } from 'styled-components';
+import { connect } from 'react-redux';
+import { fetchReviews } from './actions';
+
+const GlobalStyle = createGlobalStyle`
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  body {
+   background: #EEEEEE;
+   color: #546E7A;
+   padding: 25px;
+   font-family: 'Roboto', sans-serif;
+
+  }
+  
+  ul {
+    list-style: none;
+  }
+
+  .app-wrapper {
+    display: flex;
+    width: 80%;
+    margin: auto;
+  }
+`;
 
 class App extends Component {
+  componentDidMount() {
+    this.props.fetchReviews();
+  }
   render() {
+    const { reviews } = this.props;
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="app-wrapper">
+        <GlobalStyle />
+        <Filters />
+        <Reviews reviews={reviews} />
       </div>
     );
   }
 }
+const mapStateToProps = state => ({ reviews: state.reviews });
+const mapDispatchToProps = {
+  fetchReviews,
+};
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

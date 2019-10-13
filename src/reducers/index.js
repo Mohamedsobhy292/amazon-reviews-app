@@ -1,17 +1,28 @@
 import { combineReducers } from 'redux';
 
 const reviewsInitialState = {
-  items: {},
+  items: {
+    reviews: [],
+  },
   error: null,
   isLoading: false,
 };
 
-const reviews = (state = {}, action) => {
+const reviews = (state = reviewsInitialState, action) => {
   switch (action.type) {
-    case 'SIMPLE_ACTION':
+    case 'FETCH_REVIEWS_PENDING':
       return {
-        result: action.payload,
+        ...state,
+        isLoading: true,
       };
+
+    case 'FETCH_REVIEWS_FULFILLED':
+      return {
+        ...state,
+        isLoading: false,
+        items: action.payload,
+      };
+
     default:
       return state;
   }
