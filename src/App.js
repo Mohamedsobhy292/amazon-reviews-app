@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
 import Reviews from './components/reviews';
 import Filters from './components/filters';
 import { createGlobalStyle } from 'styled-components';
 import { connect } from 'react-redux';
 import { fetchReviews } from './actions';
+import { getSortedReviews, getAllRatings } from './selectors';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
    font-family: 'Roboto', sans-serif;
 
   }
-  
+
   ul {
     list-style: none;
   }
@@ -36,17 +36,21 @@ class App extends Component {
     this.props.fetchReviews();
   }
   render() {
-    const { reviews } = this.props;
+    const { reviews, filters, ratings } = this.props;
     return (
       <div className="app-wrapper">
         <GlobalStyle />
-        <Filters />
-        <Reviews reviews={reviews} />
+        <Filters reviews={reviews} ratings={ratings} filters={filters} />
+        <Reviews reviews={reviews} filters={filters} />
       </div>
     );
   }
 }
-const mapStateToProps = state => ({ reviews: state.reviews });
+const mapStateToProps = state => ({
+  reviews: getSortedReviews(state),
+  filters: state.filters,
+  ratings: getAllRatings(state),
+});
 const mapDispatchToProps = {
   fetchReviews,
 };

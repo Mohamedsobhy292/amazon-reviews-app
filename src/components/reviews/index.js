@@ -45,32 +45,35 @@ const ReviewDate = styled.span`
 
 const ReviewContenWrapper = styled.div``;
 
-const Reviews = ({ reviews }) => {
+const Reviews = ({ reviews, filters }) => {
   const dateRenderer = timestamp => {
     const date = new Date(timestamp);
     return date.toLocaleDateString();
   };
+
   return (
     <ReviewsWrapper>
       <ul>
-        {reviews.items.reviews.map(review => {
-          return (
-            <Review key={review.reviewId}>
-              <UserImageWrapper>
-                <UserImg
-                  src="https://tekrabuilders.com/wp-content/uploads/2018/12/male-placeholder-image.jpeg"
-                  alt="user image"
-                />
-                <ReviewDate>{dateRenderer(review.reviewCreated)}</ReviewDate>
-              </UserImageWrapper>
-              <ReviewContenWrapper>
-                <Stars rating={review.stars} />
-                <ReviewTitle>{review.title}</ReviewTitle>
-                <ReviewDescription>{review.content}</ReviewDescription>
-              </ReviewContenWrapper>
-            </Review>
-          );
-        })}
+        {reviews
+          .filter(review => String(review.stars) === filters.stars)
+          .map(review => {
+            return (
+              <Review key={review.reviewId}>
+                <UserImageWrapper>
+                  <UserImg
+                    src="https://tekrabuilders.com/wp-content/uploads/2018/12/male-placeholder-image.jpeg"
+                    alt="user image"
+                  />
+                  <ReviewDate>{dateRenderer(review.reviewCreated)}</ReviewDate>
+                </UserImageWrapper>
+                <ReviewContenWrapper>
+                  <Stars rating={review.stars} />
+                  <ReviewTitle>{review.title}</ReviewTitle>
+                  <ReviewDescription>{review.content}</ReviewDescription>
+                </ReviewContenWrapper>
+              </Review>
+            );
+          })}
       </ul>
     </ReviewsWrapper>
   );

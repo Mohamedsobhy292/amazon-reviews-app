@@ -1,11 +1,16 @@
 import { combineReducers } from 'redux';
 
 const reviewsInitialState = {
-  items: {
+  data: {
     reviews: [],
   },
   error: null,
   isLoading: false,
+};
+
+const filtersInitialState = {
+  stars: '5',
+  sorting: 'ascending',
 };
 
 const reviews = (state = reviewsInitialState, action) => {
@@ -20,7 +25,25 @@ const reviews = (state = reviewsInitialState, action) => {
       return {
         ...state,
         isLoading: false,
-        items: action.payload,
+        data: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const filters = (state = filtersInitialState, action) => {
+  switch (action.type) {
+    case 'CHANGE_RATING_FILTER':
+      return {
+        ...state,
+        stars: action.payload,
+      };
+    case 'CHANGE_REVIEWS_SORTING':
+      return {
+        ...state,
+        sorting: action.payload,
       };
 
     default:
@@ -30,4 +53,5 @@ const reviews = (state = reviewsInitialState, action) => {
 
 export default combineReducers({
   reviews,
+  filters,
 });
