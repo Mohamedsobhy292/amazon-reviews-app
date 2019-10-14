@@ -19,3 +19,8 @@ export const changeReviewsSorting = sorting => ({
   type: 'CHANGE_REVIEWS_SORTING',
   payload: sorting,
 });
+
+export const changeReviewsGrouping = grouping => ({
+  type: 'CHANGE_REVIEWS_GROUPING',
+  payload: grouping,
+});

@@ -4,8 +4,16 @@ import Filters from './components/filters';
 import { createGlobalStyle } from 'styled-components';
 import { connect } from 'react-redux';
 import { fetchReviews } from './actions';
-import { getSortedReviews, getAllRatings } from './selectors';
-import { changeReviewsFilter, changeReviewsSorting } from './actions';
+import {
+  getSortedReviews,
+  getAllRatings,
+  getGroupedReviews,
+} from './selectors';
+import {
+  changeReviewsFilter,
+  changeReviewsSorting,
+  changeReviewsGrouping,
+} from './actions';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -39,10 +47,12 @@ class App extends Component {
   render() {
     const {
       reviews,
+      reviewsGrouped,
       filters,
       ratings,
       changeReviewsFilter,
       changeReviewsSorting,
+      changeReviewsGrouping,
     } = this.props;
     return (
       <div className="app-wrapper">
@@ -53,14 +63,20 @@ class App extends Component {
           filters={filters}
           changeReviewsFilter={changeReviewsFilter}
           changeReviewsSorting={changeReviewsSorting}
+          changeReviewsGrouping={changeReviewsGrouping}
         />
-        <Reviews reviews={reviews} filters={filters} />
+        <Reviews
+          reviews={reviews}
+          filters={filters}
+          reviewsGrouped={reviewsGrouped}
+        />
       </div>
     );
   }
 }
 const mapStateToProps = state => ({
   reviews: getSortedReviews(state),
+  reviewsGrouped: getGroupedReviews(state),
   filters: state.filters,
   ratings: getAllRatings(state),
 });
@@ -68,6 +84,7 @@ const mapDispatchToProps = {
   fetchReviews,
   changeReviewsFilter,
   changeReviewsSorting,
+  changeReviewsGrouping,
 };
 
 export default connect(

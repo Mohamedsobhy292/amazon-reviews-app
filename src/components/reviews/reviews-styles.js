@@ -21,6 +21,12 @@ export const ReviewTitle = styled.h3`
   display: block;
 `;
 
+export const GroupTitle = styled.h3`
+  margin-bottom: 20px;
+  font-size: 18px;
+  display: block;
+`;
+
 export const ReviewDescription = styled.p`
   margin-bottom: 10px;
 `;
@@ -34,7 +40,7 @@ export const UserImg = styled.img`
 `;
 
 export const UserImageWrapper = styled.div`
-  margin-right: 30px;
+  margin-right: 15px;
 `;
 
 export const ReviewDate = styled.span`

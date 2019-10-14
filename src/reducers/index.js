@@ -11,6 +11,7 @@ const reviewsInitialState = {
 const filtersInitialState = {
   stars: '5',
   sorting: 'ascending',
+  groupBy: 'month',
 };
 
 const reviews = (state = reviewsInitialState, action) => {
@@ -44,6 +45,11 @@ const filters = (state = filtersInitialState, action) => {
       return {
         ...state,
         sorting: action.payload,
+      };
+    case 'CHANGE_REVIEWS_GROUPING':
+      return {
+        ...state,
+        groupBy: action.payload,
       };
 
     default:
