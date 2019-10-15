@@ -1,7 +1,9 @@
 import styled from 'styled-components';
+import ReactLoading from 'react-loading';
 
 export const ReviewsWrapper = styled.div`
   flex-basis: 70%;
+  padding-bottom: 60px;
 `;
 
 export const Review = styled.li`
@@ -45,4 +47,10 @@ export const UserImageWrapper = styled.div`
 
 export const ReviewDate = styled.span`
   color: #bfbfbf;
+`;
+
+export const Loader = styled(ReactLoading)`
+  text-align: center;
+  margin: auto;
+  display: block;
 `;

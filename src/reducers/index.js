@@ -4,6 +4,7 @@ const reviewsInitialState = {
   data: {
     reviews: [],
   },
+  currentPage: 1,
   error: null,
   isLoading: false,
 };
@@ -26,7 +27,11 @@ const reviews = (state = reviewsInitialState, action) => {
       return {
         ...state,
         isLoading: false,
-        data: action.payload,
+        data: {
+          reviews: [...state.data.reviews, ...action.payload.reviews],
+          hasMore: action.payload.hasMore,
+        },
+        currentPage: state.currentPage + 1,
       };
 
     default:

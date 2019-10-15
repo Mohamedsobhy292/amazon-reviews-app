@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import Stars from '../stars';
 import {
   ReviewsWrapper,
@@ -8,12 +9,31 @@ import {
   ReviewDate,
   ReviewTitle,
   GroupTitle,
+  Loader,
   ReviewDescription,
 } from './reviews-styles';
+import { getGroupedReviews, getAllRatings } from '../../selectors';
+import { fetchReviews } from '../../actions';
 
-// .filter(review => String(review.stars) === filters.stars)
+const Reviews = ({ reviewsGrouped, reviews, fetchReviews }) => {
+  // Effect to handle scroll
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
 
-const Reviews = ({ reviews, filters, reviewsGrouped }) => {
+  // effect for fetching data
+  useEffect(() => {
+    fetchReviews(reviews.currentPage);
+  }, []);
+
+  const handleScroll = () => {
+    const onTheEndofPage =
+      window.innerHeight + document.documentElement.scrollTop !==
+      document.documentElement.offsetHeight;
+    if (onTheEndofPage || reviews.isLoading || !reviews.data.hasMore) return;
+    fetchReviews(reviews.currentPage);
+  };
   const dateRenderer = timestamp => {
     const date = new Date(timestamp);
     return date.toLocaleDateString();
@@ -22,9 +42,9 @@ const Reviews = ({ reviews, filters, reviewsGrouped }) => {
   return (
     <ReviewsWrapper>
       <ul>
-        {reviewsGrouped.map(reviewGroup => {
+        {reviewsGrouped.map((reviewGroup, index) => {
           return (
-            <div>
+            <div key={index}>
               <GroupTitle>{reviewGroup.groupTitle}</GroupTitle>
               {reviewGroup.reviews.map(review => {
                 return (
@@ -50,8 +70,23 @@ const Reviews = ({ reviews, filters, reviewsGrouped }) => {
           );
         })}
       </ul>
+      {reviews.isLoading && <Loader color="#546E7A" type="bars" />}
     </ReviewsWrapper>
   );
 };
 
-export default Reviews;
+const mapStateToProps = state => ({
+  reviewsGrouped: getGroupedReviews(state),
+  filters: state.filters,
+  ratings: getAllRatings(state),
+  reviews: state.reviews,
+});
+
+const mapDispatchToProps = {
+  fetchReviews,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Reviews);
