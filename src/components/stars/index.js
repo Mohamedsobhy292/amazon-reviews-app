@@ -17,12 +17,11 @@ const Stars = ({ rating }) => {
     <StarsWrapper>
       {starsArr.map(star => {
         if (rating >= star) {
-          return <StarFilled width="12" key={star} />;
+          return <StarFilled width="12" key={star} data-testid="filled-star" />;
         }
-        return <StarOut width="12" key={star} />;
+        return <StarOut width="12" key={star} data-testid="outlined-star" />;
       })}
     </StarsWrapper>
   );
 };
-
 export default Stars;

@@ -6,6 +6,7 @@ const GroupCard = ({ filters, changeReviewsGrouping }) => {
     <FilterCard>
       <FiltersTitle>Group By</FiltersTitle>
       <CustomSelect
+        data-testid="group-select"
         value={filters.groupBy}
         onChange={e => changeReviewsGrouping(e.target.value)}
       >
